@@ -4,16 +4,16 @@
  
 /* Open Files
  *
- * Defines the "ko.openfiles" namespace.
+ * Defines the "ko.openfiles2" namespace.
  */
 if (typeof(ko) == 'undefined')
 {
     var ko = {};
 }
 
-if (typeof ko.openfiles == 'undefined')
+if (typeof ko.openfiles2 == 'undefined')
 {
-    ko.openfiles = function()
+    ko.openfiles2 = function()
     {
         this.init();
     };
@@ -44,21 +44,21 @@ if (typeof ko.openfiles == 'undefined')
 
     /* Pref Constants */
     const
-        PREF_GROUPING       = 'openfiles_grouping',
-        PREF_TAB_SORTING    = 'openfiles_tab_sorting',
-        PREF_GROUPING_TYPE  = 'openfiles_grouping_type',
-        PREF_SORTING_TYPE   = 'openfiles_sorting_type',
-        PREF_SORTING_DIR    = 'openfiles_sorting_direction',
-        PREF_SHOW_TAB_BAR   = 'openfiles_show_tab_bar';
+        PREF_GROUPING       = 'openfiles2_grouping',
+        PREF_TAB_SORTING    = 'openfiles2_tab_sorting',
+        PREF_GROUPING_TYPE  = 'openfiles2_grouping_type',
+        PREF_SORTING_TYPE   = 'openfiles2_sorting_type',
+        PREF_SORTING_DIR    = 'openfiles2_sorting_direction',
+        PREF_SHOW_TAB_BAR   = 'openfiles2_show_tab_bar';
 
     /* Logging */
-    var log = ko.logging.getLogger('koOpenfiles');
+    var log = ko.logging.getLogger('koOpenfiles2');
     //log.setLevel(ko.logging.LOG_DEBUG);
         
     /* Class Pointer */
     var self;
     
-    ko.openfiles.prototype  =
+    ko.openfiles2.prototype  =
     {
         
         /**
@@ -69,13 +69,13 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        init: function openfiles_init()
+        init: function openfiles2_init()
         {
             self = this;
             
             // Create references to frequently used DOM elements 
             koWindow    = require("ko/windows").getMain();
-            listbox     = document.getElementById('openfilesListbox');
+            listbox     = document.getElementById('openfiles2Listbox');
             
             // Prepare item template for file items
             var tpl     = document.getElementById('fileTemplate');
@@ -146,12 +146,12 @@ if (typeof ko.openfiles == 'undefined')
 
             if ( ! ko.prefs.getBoolean(PREF_GROUPING, true))
             {
-                document.getElementById("openfilesPrefPopup_ToggleGrouping").removeAttribute("checked");
+                document.getElementById("openfiles2PrefPopup_ToggleGrouping").removeAttribute("checked");
             }
             
             if ( ! ko.prefs.getBoolean(PREF_TAB_SORTING, false))
             {
-                document.getElementById("openfilesPrefPopup_ToggleTabSorting").removeAttribute("checked");
+                document.getElementById("openfiles2PrefPopup_ToggleTabSorting").removeAttribute("checked");
             }
             
             // Bind listeners and reload (initialize) the list of open files
@@ -164,112 +164,112 @@ if (typeof ko.openfiles == 'undefined')
         controller:
         {
             // Grouping Toggle
-            do_cmd_openfilesGrouping: function()
+            do_cmd_openfiles2Grouping: function()
             {
                 self.toggleGrouping();
                 this._updateCommands();
             },
             
             // Tab sorting toggle
-            do_cmd_openfilesTabSorting: function()
+            do_cmd_openfiles2TabSorting: function()
             {
                 self.toggleTabSorting();
                 this._updateCommands();
             },
 
             // Group by Language
-            is_cmd_openfilesGroupByLang_enabled: function()
+            is_cmd_openfiles2GroupByLang_enabled: function()
             {
                 return !! ko.prefs.getBoolean(PREF_GROUPING, true);
             },
 
-            do_cmd_openfilesGroupByLang: function()
+            do_cmd_openfiles2GroupByLang: function()
             {
                 self.activateGroupOption('byLanguage');
             },
 
             // Group by Extension
-            is_cmd_openfilesGroupByExt_enabled: function()
+            is_cmd_openfiles2GroupByExt_enabled: function()
             {
                 return !! ko.prefs.getBoolean(PREF_GROUPING, true);
             },
 
-            do_cmd_openfilesGroupByExt: function()
+            do_cmd_openfiles2GroupByExt: function()
             {
                 self.activateGroupOption('byExt');
             },
 
             // Group by Folder
-            is_cmd_openfilesGroupByFolder_enabled: function()
+            is_cmd_openfiles2GroupByFolder_enabled: function()
             {
                 return !! ko.prefs.getBoolean(PREF_GROUPING, true);
             },
 
-            do_cmd_openfilesGroupByFolder: function()
+            do_cmd_openfiles2GroupByFolder: function()
             {
                 self.activateGroupOption('byFolder');
             },
 
             // Group by Location
-            is_cmd_openfilesGroupByLocation_enabled: function()
+            is_cmd_openfiles2GroupByLocation_enabled: function()
             {
                 return !! ko.prefs.getBoolean(PREF_GROUPING, true);
             },
 
-            do_cmd_openfilesGroupByLocation: function()
+            do_cmd_openfiles2GroupByLocation: function()
             {
                 self.activateGroupOption('byLocation');
             },
 
             // Group by Pattern
-            is_cmd_openfilesGroupByPattern_enabled: function()
+            is_cmd_openfiles2GroupByPattern_enabled: function()
             {
                 return !! ko.prefs.getBoolean(PREF_GROUPING, true);
             },
 
-            do_cmd_openfilesGroupByPattern: function()
+            do_cmd_openfiles2GroupByPattern: function()
             {
                 self.activateGroupOption('byPattern');
             },
 
             // Sort by Name
-            do_cmd_openfilesSortAlpha: function()
+            do_cmd_openfiles2SortAlpha: function()
             {
                 self.activateSortOption('byName');
             },
 
             // Sort Naturally
-            do_cmd_openfilesSortNatural: function()
+            do_cmd_openfiles2SortNatural: function()
             {
                 self.activateSortOption('byIndex');
             },
 
             // Sort by Last Opened
-            do_cmd_openfilesSortLastOpened: function()
+            do_cmd_openfiles2SortLastOpened: function()
             {
                 self.activateSortOption('byLastOpen');
                 self.setSortDirection('DESC');
             },
 
             // Sort by Access No
-            do_cmd_openfilesSortAccessNo: function()
+            do_cmd_openfiles2SortAccessNo: function()
             {
                 self.activateSortOption('byAccessNo');
                 self.setSortDirection('DESC');
             },
 
             // Sort direction
-            do_cmd_openfilesSortAscending: function()
+            do_cmd_openfiles2SortAscending: function()
             {
                 self.setSortDirection('ASC');
             },
-            do_cmd_openfilesSortDescending: function()
+            do_cmd_openfiles2SortDescending: function()
             {
                 self.setSortDirection('DESC');
             },
 
             // Re-Sort
-            do_cmd_openfilesReSort: function()
+            do_cmd_openfiles2ReSort: function()
             {
                 self.sort();
             },
@@ -309,7 +309,7 @@ if (typeof ko.openfiles == 'undefined')
             // Update commands helper
             _updateCommands: function()
             {
-                var set = document.getElementById('cmdset_openfiles');
+                var set = document.getElementById('cmdset_openfiles2');
                 ko.commands.updateCommandset(set);
             },
 
@@ -340,9 +340,9 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Boolean}
          */
-        togglePane: function openfiles_togglePane(collapseIfFocused = true)
+        togglePane: function openfiles2_togglePane(collapseIfFocused = true)
         {
-          ko.uilayout.toggleTab('openfilesViewbox', collapseIfFocused);
+          ko.uilayout.toggleTab('openfiles2Viewbox', collapseIfFocused);
         },
         
         /**
@@ -350,7 +350,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Boolean} 
          */
-        isTabBarVisible: function openfiles_isTabBarVisible()
+        isTabBarVisible: function openfiles2_isTabBarVisible()
         {
             return koWindow.document.getElementById('topview').classList.contains('showTabs');
         },
@@ -360,7 +360,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        toggleTabBar: function openfiles_toggleTabBar()
+        toggleTabBar: function openfiles2_toggleTabBar()
         {
             this.setTabBarVisibility(
                 ! this.isTabBarVisible()
@@ -374,7 +374,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        setTabBarVisibility: function openfiles_setTabBarVisibility(show /* false */)
+        setTabBarVisibility: function openfiles2_setTabBarVisibility(show /* false */)
         {
             var classList = koWindow.document.getElementById('topview').classList;
             var menuEntry = koWindow.document.getElementById('menu_toggleTabBar');
@@ -401,7 +401,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        bindListeners: function openfiles_bindListeners()
+        bindListeners: function openfiles2_bindListeners()
         {
             document.getElementById('openFilesCloseAll').addEventListener("command", this.onClickCloseAll.bind(this));
             
@@ -447,7 +447,7 @@ if (typeof ko.openfiles == 'undefined')
             koWindow.addEventListener('workspace_restored', this.reload.bind(this));
             koWindow.addEventListener('project_opened', this.reload.bind(this));
             
-            /**** OpenFiles Events ******/
+            /**** OpenFiles2 Events ******/
             listbox.addEventListener('select', function(e) {
                 if (e.target == listbox && e.target.selectedItem)
                 {
@@ -481,7 +481,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void}
          */
-        onContextMenu: function openfiles_onContextMenu(e)
+        onContextMenu: function openfiles2_onContextMenu(e)
         {
             var item    = e.currentTarget.selectedItem;
             
@@ -498,7 +498,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        onClickItemClose: function openfiles_onClickItemClose(editorView)
+        onClickItemClose: function openfiles2_onClickItemClose(editorView)
         {
             editorView.close();
         },
@@ -510,7 +510,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        onClickGroupClose: function openfiles_onClickGroupClose(groupItem)
+        onClickGroupClose: function openfiles2_onClickGroupClose(groupItem)
         {
             var previousSibling = groupItem.previousSibling;
             while (previousSibling && ! previousSibling.classList.contains('file-item'))
@@ -564,7 +564,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        onClickCloseAll: function openfiles_onClickGroupClose()
+        onClickCloseAll: function openfiles2_onClickGroupClose()
         {
             ko.commands.doCommandAsync("cmd_closeAll");
         },
@@ -576,7 +576,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        onUpdateDirtyStatus: function openfiles_onUpdateDirtyStatus(e)
+        onUpdateDirtyStatus: function openfiles2_onUpdateDirtyStatus(e)
         {
             var editorView      = e.originalTarget;
             var dirtyIndicator  = listbox.querySelector(
@@ -607,7 +607,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Void}
          */
-        reload: function openfiles_reload(noDelay)
+        reload: function openfiles2_reload(noDelay)
         {
             // Prevent multiple calls in a short amount of time (10ms)
             if ( ! noDelay) {
@@ -656,7 +656,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        drawList: function openfiles_drawList(noDelay = false)
+        drawList: function openfiles2_drawList(noDelay = false)
         {
             // Prevent multiple calls in a short amount of time (10ms)
             if ( ! noDelay) {
@@ -705,7 +705,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        drawGroups: function openfiles_drawGroups()
+        drawGroups: function openfiles2_drawGroups()
         {
             // Get the preferred grouping type (eg. by language)
             var groupOption = ko.prefs.getString(PREF_GROUPING_TYPE, 'byLanguage');
@@ -817,7 +817,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Object} Returns element ready for insertion
          */
-        createListItem: function openfiles_createListItem(editorView)
+        createListItem: function openfiles2_createListItem(editorView)
         {
             // Clone the template
             var listItem = template.fileItem.cloneNode(true);
@@ -875,9 +875,9 @@ if (typeof ko.openfiles == 'undefined')
                 }.bind(this)
             );
             
-            if (editorView._openfilesListeners == undefined) // prevent duplicate listeners
+            if (editorView._openfiles2Listeners == undefined) // prevent duplicate listeners
             {
-                editorView._openfilesListeners = true;
+                editorView._openfiles2Listeners = true;
                 editorView.addEventListener(
                     'view_dirty_status_changed',
                     this.onUpdateDirtyStatus.bind(this)
@@ -897,7 +897,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Object}  Returns element ready for insertion
          */
-        createGroupItem: function openfiles_createGroupItem(groupInfo, className)
+        createGroupItem: function openfiles2_createGroupItem(groupInfo, className)
         {
             // Clone the template
             var groupItem = template.groupItem.cloneNode(true);
@@ -959,7 +959,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        removeGroups: function openfiles_removeGroups(includeSplits = true)
+        removeGroups: function openfiles2_removeGroups(includeSplits = true)
         {
             var groups = listbox.querySelectorAll(
                 'richlistitem.group-item' + (includeSplits ? ',richlistitem.split-item' : '')
@@ -976,7 +976,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        removeEmptyGroups: function openfiles_removeEmptyGroups()
+        removeEmptyGroups: function openfiles2_removeEmptyGroups()
         {
             var groups = listbox.querySelectorAll('richlistitem.group-item');
             
@@ -1003,7 +1003,7 @@ if (typeof ko.openfiles == 'undefined')
          *                               ko.views.manager.getAllViews
          * @returns {Void}
          */
-        addItem: function openfiles_addItem(editorView)
+        addItem: function openfiles2_addItem(editorView)
         {
             openViews[editorView.uid.number] = editorView;
             this.drawList();
@@ -1017,7 +1017,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Boolean}            whether the file existed in the list
          */
-        removeItem: function openfiles_removeItem(editorView)
+        removeItem: function openfiles2_removeItem(editorView)
         {
             // Validate input
             if (typeof editorView != 'object'   ||
@@ -1075,7 +1075,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Array}
          */
-        getItems: function openfiles_getItems()
+        getItems: function openfiles2_getItems()
         {
             return listbox.querySelectorAll('richlistitem.file-item');
         },
@@ -1088,7 +1088,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Boolean}   Returns false if the item does not exist
          */
-        selectItem: function openfiles_selectItem(editorView, sendEditorTabClick)
+        selectItem: function openfiles2_selectItem(editorView, sendEditorTabClick)
         {
             // If a richlistitem is passed, simply forward the call
             // to the relevant tab and let it come back around
@@ -1138,7 +1138,7 @@ if (typeof ko.openfiles == 'undefined')
          * @returns {Boolean|Object}     Returns false if none is selected, 
          *                               otherwise returns EditorView.
          */
-        getSelectedItem: function openfiles_getSelectedItem()
+        getSelectedItem: function openfiles2_getSelectedItem()
         {
             return listbox.querySelector("richlistitem[selected]");
         },
@@ -1150,7 +1150,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Object|Boolean} Previous Item DOM element
          */
-        getPreviousItem: function openfiles_getPreviousItem(item)
+        getPreviousItem: function openfiles2_getPreviousItem(item)
         {
             var prev = item.previousSibling;
             
@@ -1170,7 +1170,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Object|Boolean} Next Item DOM element
          */
-        getNextItem: function openfiles_getNextItem(item)
+        getNextItem: function openfiles2_getNextItem(item)
         {
             var next = item.nextSibling;
             
@@ -1190,7 +1190,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        sort: function openfiles_sort()
+        sort: function openfiles2_sort()
         {
             this.removeGroups();
             
@@ -1211,7 +1211,7 @@ if (typeof ko.openfiles == 'undefined')
          * 
          * @returns {Void} 
          */
-        sortItem: function openfiles_sortItem(item, resort = false)
+        sortItem: function openfiles2_sortItem(item, resort = false)
         {
             if (resort)
             {
@@ -1300,7 +1300,7 @@ if (typeof ko.openfiles == 'undefined')
              * 
              * @returns {Integer} positive=higher,negative=lower,0=same
              */
-            byName: function openfiles_byName(current,previous)
+            byName: function openfiles2_byName(current,previous)
             {
                 return previous.title.toLowerCase().localeCompare(
                     current.title.toLowerCase()
@@ -1315,7 +1315,7 @@ if (typeof ko.openfiles == 'undefined')
              *
              * @returns {Integer} positive=higher,negative=lower,0=same
              */
-            byIndex: function openfiles_byIndex(current,previous)
+            byIndex: function openfiles2_byIndex(current,previous)
             {
                 var currentTab = current.parentNode._tab;
                 current = Array.prototype.indexOf.call(
@@ -1338,7 +1338,7 @@ if (typeof ko.openfiles == 'undefined')
              *
              * @returns {Integer} positive=higher,negative=lower,0=same
              */
-            byLastOpen: function openfiles_byLastOpen(current,previous)
+            byLastOpen: function openfiles2_byLastOpen(current,previous)
             {
                 current  = current.koDoc ? current.koDoc.fileLastOpened : 0;
                 previous  = previous.koDoc ? previous.koDoc.fileLastOpened : 0;
@@ -1354,7 +1354,7 @@ if (typeof ko.openfiles == 'undefined')
              *
              * @returns {Integer} positive=higher,negative=lower,0=same
              */
-            byAccessNo: function openfiles_byAccessNo(current,previous)
+            byAccessNo: function openfiles2_byAccessNo(current,previous)
             {
                 current  = current.koDoc ? current.koDoc.fileAccessNo : 0;
                 previous  = previous.koDoc ? previous.koDoc.fileAccessNo : 0;
@@ -1378,7 +1378,7 @@ if (typeof ko.openfiles == 'undefined')
                  * 
                  * @returns {Integer} positive=higher,negative=lower,0=same
                  */
-                sort: function openfiles_sort(current,previous)
+                sort: function openfiles2_sort(current,previous)
                 {
                     current  = current.koDoc.file ?
                                 current.koDoc.file.ext :
@@ -1401,7 +1401,7 @@ if (typeof ko.openfiles == 'undefined')
                  * @returns {Object}    Object containing group info
                  *                      keys: name, classlist, attributes
                  */
-                group: function openfiles_group(editorView)
+                group: function openfiles2_group(editorView)
                 {
                     return {
                         name: editorView.koDoc.file && editorView.koDoc.file.ext ?
@@ -1422,7 +1422,7 @@ if (typeof ko.openfiles == 'undefined')
                  * 
                  * @returns {Integer} positive=higher,negative=lower,0=same
                  */
-                sort: function openfiles_sort(current,previous)
+                sort: function openfiles2_sort(current,previous)
                 {
                     current = current.koDoc ? current.koDoc.language : -1;
                     previous = previous.koDoc ? previous.koDoc.language : -1;
@@ -1438,7 +1438,7 @@ if (typeof ko.openfiles == 'undefined')
                  * @returns {Object}    Object containing group info
                  *                      keys: name, classlist, attributes
                  */
-                group: function openfiles_group(editorView)
+                group: function openfiles2_group(editorView)
                 {
                     var language;
                     if (editorView.getAttribute("type") == "editor")
@@ -1470,7 +1470,7 @@ if (typeof ko.openfiles == 'undefined')
                  *
                  * @returns {Integer} positive=higher,negative=lower,0=same
                  */
-                sort: function openfiles_sort(current,previous)
+                sort: function openfiles2_sort(current,previous)
                 {
                     current = self.groupers.byFolder._getFolderName(current);
                     previous = self.groupers.byFolder._getFolderName(previous)
@@ -1486,7 +1486,7 @@ if (typeof ko.openfiles == 'undefined')
                  * @returns {Object}    Object containing group info
                  *                      keys: name, classlist, attributes
                  */
-                group: function openfiles_group(editorView)
+                group: function openfiles2_group(editorView)
                 {
                     return {
                         name: self.groupers.byFolder._getFolderName(editorView)
@@ -1517,7 +1517,7 @@ if (typeof ko.openfiles == 'undefined')
                  *
                  * @returns {Integer} positive=higher,negative=lower,0=same
                  */
-                sort: function openfiles_sort(current,previous)
+                sort: function openfiles2_sort(current,previous)
                 {
                     current = self.groupers.byLocation._getPath(current);
                     previous = self.groupers.byLocation._getPath(previous)
@@ -1533,7 +1533,7 @@ if (typeof ko.openfiles == 'undefined')
                  * @returns {Object}    Object containing group info
                  *                      keys: name, classlist, attributes
                  */
-                group: function openfiles_group(editorView)
+                group: function openfiles2_group(editorView)
                 {
                     return {
                         name: self.groupers.byLocation._getPath(editorView)
@@ -1633,7 +1633,7 @@ if (typeof ko.openfiles == 'undefined')
                  *
                  * @returns {Integer} positive=higher,negative=lower,0=same
                  */
-                sort: function openfiles_sort(current,previous)
+                sort: function openfiles2_sort(current,previous)
                 {
                     current = self.groupers.byPattern._getPattern(current).name;
                     previous = self.groupers.byPattern._getPattern(previous).name;
@@ -1649,7 +1649,7 @@ if (typeof ko.openfiles == 'undefined')
                  * @returns {Object}    Object containing group info
                  *                      keys: name, classlist, attributes
                  */
-                group: function openfiles_group(editorView)
+                group: function openfiles2_group(editorView)
                 {
                     return self.groupers.byPattern._getPattern(editorView);
                 },
@@ -1713,7 +1713,7 @@ if (typeof ko.openfiles == 'undefined')
                  * 
                  * @returns {Integer} positive=higher,negative=lower,0=same
                  */
-                sort: function openfiles_sort(current,previous)
+                sort: function openfiles2_sort(current,previous)
                 {
                     current = current.parentView.getAttribute("id");
                     previous = previous.parentView.getAttribute("id");
@@ -1729,7 +1729,7 @@ if (typeof ko.openfiles == 'undefined')
                  * @returns {Object}    Object containing group info
                  *                      keys: name, classlist, attributes
                  */
-                group: function openfiles_group(editorView)
+                group: function openfiles2_group(editorView)
                 {
                     return {
                         name: editorView.parentView.getAttribute("id")
@@ -1743,7 +1743,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns string   ASC|DESC
          */
-        getSortDirection: function openfiles_getSortDirection()
+        getSortDirection: function openfiles2_getSortDirection()
         {
             return ko.prefs.getString(PREF_SORTING_DIR, 'ASC');
         },
@@ -1755,7 +1755,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Void}
          */
-        setSortDirection: function openfiles_setSortDirection(direction)
+        setSortDirection: function openfiles2_setSortDirection(direction)
         {
             ko.prefs.setStringPref(PREF_SORTING_DIR, direction);
             this.sort();
@@ -1769,7 +1769,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Void}
          */
-        registerSortOption: function openfiles_registerSortOption(id, callback)
+        registerSortOption: function openfiles2_registerSortOption(id, callback)
         {
             sortOptions[id] = {
                 id              :   id,
@@ -1788,7 +1788,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Void}
          */
-        registerGroupOption: function openfiles_registerGroupOption(id, callbackSort, callbackGroup)
+        registerGroupOption: function openfiles2_registerGroupOption(id, callbackSort, callbackGroup)
         {
             groupOptions[id] = {
                 id              :   id,
@@ -1805,7 +1805,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Void}
          */
-        activateSortOption: function openfiles_activateSortOption(id)
+        activateSortOption: function openfiles2_activateSortOption(id)
         {
             if (sortOptions[id] === undefined)
             {
@@ -1825,7 +1825,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Boolean}
          */
-        activateGroupOption: function openfiles_activateGroupOption(id)
+        activateGroupOption: function openfiles2_activateGroupOption(id)
         {
             if (groupOptions[id] === undefined)
             {
@@ -1844,7 +1844,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Void}
          */
-        toggleGrouping: function openfiles_toggleGrouping()
+        toggleGrouping: function openfiles2_toggleGrouping()
         {
             this.removeGroups();
 
@@ -1859,7 +1859,7 @@ if (typeof ko.openfiles == 'undefined')
             this.sort();
         },
         
-        toggleTabSorting: function openfiles_toggleTabSOrting()
+        toggleTabSorting: function openfiles2_toggleTabSOrting()
         {
             var sorting = ! ko.prefs.getBoolean(PREF_TAB_SORTING, false);
             ko.prefs.setBooleanPref(PREF_TAB_SORTING, sorting);
@@ -1871,7 +1871,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Object}
          */
-        getSortOptions: function openfiles_getSortOptions()
+        getSortOptions: function openfiles2_getSortOptions()
         {
             return sortOptions;
         },
@@ -1881,7 +1881,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Object}
          */
-        getGroupOptions: function openfiles_getGroupOptions()
+        getGroupOptions: function openfiles2_getGroupOptions()
         {
             return groupOptions;
         },
@@ -1891,7 +1891,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Object} Active SortItem Object
          */
-        getActiveSortOption: function openfiles_getActiveSortOption()
+        getActiveSortOption: function openfiles2_getActiveSortOption()
         {
             var id = ko.prefs.getString(PREF_SORTING_TYPE, 'byName');
             return sortOptions[id];
@@ -1902,7 +1902,7 @@ if (typeof ko.openfiles == 'undefined')
          *
          * @returns {Object} Active GroupItem Object
          */
-        getActiveGroupOption: function openfiles_getActiveGroupOption()
+        getActiveGroupOption: function openfiles2_getActiveGroupOption()
         {
             var groupOption = ko.prefs.getString(PREF_GROUPING_TYPE, 'byLanguage');
             return groupOptions[groupOption];
@@ -1910,6 +1910,6 @@ if (typeof ko.openfiles == 'undefined')
     
     };
     
-    ko.openfiles = new ko.openfiles();
+    ko.openfiles2 = new ko.openfiles2();
     
 }).apply();

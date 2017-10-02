@@ -1,0 +1,5 @@
+content openfiles2 jar:openfiles2.jar!/content/
+skin openfiles2 classic/1.0 jar:openfiles2.jar!/skin/
+locale openfiles2 en-US jar:openfiles2.jar!/locale/en-US/
+
+overlay chrome://komodo/content/komodo.xul chrome://openfiles2/content/overlay.xul

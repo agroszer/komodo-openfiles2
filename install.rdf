@@ -2,13 +2,13 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
      xmlns:em="http://www.mozilla.org/2004/em-rdf#">
     <Description about="urn:mozilla:install-manifest">
-        <em:id>openfiles@activestate.com</em:id>
+        <em:id>openfiles2@activestate.com</em:id>
         <em:name>Open Files</em:name>
         <em:version>1.0</em:version>
         <em:description>Navigate through your open files easily from the sidebar</em:description>
         <em:creator>Nathan Rijksen</em:creator>
         <em:homepageURL>http://www.activestate.com/komodo-ide</em:homepageURL>
-        <em:iconURL>chrome://openfiles/skin/files.png</em:iconURL>
+        <em:iconURL>chrome://openfiles2/skin/files.png</em:iconURL>
         <em:type>2</em:type> <!-- type=extension --> 
  
         <em:targetApplication>

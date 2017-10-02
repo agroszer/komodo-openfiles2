@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <!DOCTYPE overlay PUBLIC "-//MOZILLA//DTD XUL V1.0//EN" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" [
-  <!ENTITY % openfilesDTD SYSTEM "chrome://openfiles/locale/openfiles.dtd">
-  %openfilesDTD;
+  <!ENTITY % openfiles2DTD SYSTEM "chrome://openfiles2/locale/openfiles2.dtd">
+  %openfiles2DTD;
   <!ENTITY % komodoDTD SYSTEM "chrome://komodo/locale/komodo.dtd">
   %komodoDTD;
 ]>
 <?xml-stylesheet href="less://komodo/skin/global/global.less" type="text/css"?>
-<?xml-stylesheet href="less://openfiles/skin/openfiles.less" type="text/css" ?>
+<?xml-stylesheet href="less://openfiles2/skin/openfiles2.less" type="text/css" ?>
  
 <page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <commandset id="panel-proxy-commandset"/>
     
-    <vbox flex="1" id="openfilesWrapper">
+    <vbox flex="1" id="openfiles2Wrapper">
         <vbox flex="99">
-            <hbox id="openfilesPrefHbox" class="status-toolbar" align="center">
+            <hbox id="openfiles2PrefHbox" class="status-toolbar" align="center">
                 <label
                        id="openFilesPaneLabel"
                        value="&openFiles.label;: 0"
@@ -24,130 +24,130 @@
                     tooltiptext="&closeFiles.tooltip;"/>
                 <spacer flex="1"/>
                 <toolbarbutton
-                    id="openfilesPrefButton"
+                    id="openfiles2PrefButton"
                     class="cog-icon"
                     buttonstyle="pictures"
                     type="menu"
                     orient="horizontal">
                     
-                    <menupopup id="openfilesPrefPopup">
+                    <menupopup id="openfiles2PrefPopup">
 
                         <menuitem
-                            id="openfilesPrefPopup_ToggleGrouping"
-                            observes="cmd_openfilesGrouping"
+                            id="openfiles2PrefPopup_ToggleGrouping"
+                            observes="cmd_openfiles2Grouping"
                             label="&groupFiles.label;"
                             checked="true"
                             type="checkbox"/>
                         
                         <menuitem
-                            id="openfilesPrefPopup_ToggleTabSorting"
-                            observes="cmd_openfilesTabSorting"
+                            id="openfiles2PrefPopup_ToggleTabSorting"
+                            observes="cmd_openfiles2TabSorting"
                             label="&sortTabs.label;"
                             checked="true"
                             type="checkbox"/>
 
-                        <menuseparator id="openfilesPrefPopupSeparatorGrouping"/>
+                        <menuseparator id="openfiles2PrefPopupSeparatorGrouping"/>
 
                         <menuitem
-                            id="openfilesPrefPopup_GroupLang"
-                            observes="cmd_openfilesGroupByLang"
+                            id="openfiles2PrefPopup_GroupLang"
+                            observes="cmd_openfiles2GroupByLang"
                             label="&groupByLang.label;"
                             checked="true"
                             persist="checked"
                             name="groupBy"
                             type="radio"/>
                         <menuitem
-                            id="openfilesPrefPopup_GroupExt"
-                            observes="cmd_openfilesGroupByExt"
+                            id="openfiles2PrefPopup_GroupExt"
+                            observes="cmd_openfiles2GroupByExt"
                             label="&groupByExt.label;"
                             checked="false"
                             persist="checked"
                             name="groupBy"
                             type="radio"/>
                         <menuitem
-                            id="openfilesPrefPopup_GroupFolder"
-                            observes="cmd_openfilesGroupByFolder"
+                            id="openfiles2PrefPopup_GroupFolder"
+                            observes="cmd_openfiles2GroupByFolder"
                             label="&groupByFolder.label;"
                             checked="false"
                             persist="checked"
                             name="groupBy"
                             type="radio"/>
                         <menuitem
-                            id="openfilesPrefPopup_GroupByLocation"
-                            observes="cmd_openfilesGroupByLocation"
+                            id="openfiles2PrefPopup_GroupByLocation"
+                            observes="cmd_openfiles2GroupByLocation"
                             label="&groupByLocation.label;"
                             checked="false"
                             persist="checked"
                             name="groupBy"
                             type="radio"/>
                         <menuitem
-                            id="openfilesPrefPopup_GroupPattern"
-                            observes="cmd_openfilesGroupByPattern"
+                            id="openfiles2PrefPopup_GroupPattern"
+                            observes="cmd_openfiles2GroupByPattern"
                             label="&groupByPattern.label;"
                             checked="false"
                             persist="checked"
                             name="groupBy"
                             type="radio"/>
 
-                        <menuseparator id="openfilesPrefPopupSeparatorGroupBy"/>
+                        <menuseparator id="openfiles2PrefPopupSeparatorGroupBy"/>
 
                         <menuitem
-                            id="openfilesPrefPopup_SortAlpha"
-                            observes="cmd_openfilesSortAlpha"
+                            id="openfiles2PrefPopup_SortAlpha"
+                            observes="cmd_openfiles2SortAlpha"
                             label="&sortAlpha.label;"
                             checked="true"
                             persist="checked"
                             name="sortBy"
                             type="radio"/>
                         <menuitem
-                            id="openfilesPrefPopup_SortNatural"
-                            observes="cmd_openfilesSortNatural"
+                            id="openfiles2PrefPopup_SortNatural"
+                            observes="cmd_openfiles2SortNatural"
                             label="&sortNatural.label;"
                             checked="false"
                             persist="checked"
                             name="sortBy"
                             type="radio"/>
                         <menuitem
-                            id="openfilesPrefPopup_SortByLastOpen"
-                            observes="cmd_openfilesSortLastOpened"
+                            id="openfiles2PrefPopup_SortByLastOpen"
+                            observes="cmd_openfiles2SortLastOpened"
                             label="&sortLastOpened.label;"
                             checked="false"
                             persist="checked"
                             name="sortBy"
                             type="radio"/>
                         <menuitem
-                            id="openfilesPrefPopup_SortByAccessNo"
-                            observes="cmd_openfilesSortAccessNo"
+                            id="openfiles2PrefPopup_SortByAccessNo"
+                            observes="cmd_openfiles2SortAccessNo"
                             label="&sortAccessNo.label;"
                             checked="false"
                             persist="checked"
                             name="sortBy"
                             type="radio"/>
 
-                        <menuseparator id="openfilesPrefPopupSeparatorSortBy"/>
+                        <menuseparator id="openfiles2PrefPopupSeparatorSortBy"/>
 
                         <menuitem
-                            id="openfilesPrefPopup_SortAscending"
-                            observes="cmd_openfilesSortAscending"
+                            id="openfiles2PrefPopup_SortAscending"
+                            observes="cmd_openfiles2SortAscending"
                             label="&sortAscending.label;"
                             checked="true"
                             persist="checked"
                             name="sortDir"
                             type="radio"/>
                         <menuitem
-                            id="openfilesPrefPopup_SortDescending"
-                            observes="cmd_openfilesSortDescending"
+                            id="openfiles2PrefPopup_SortDescending"
+                            observes="cmd_openfiles2SortDescending"
                             label="&sortDescending.label;"
                             checked="false"
                             persist="checked"
                             name="sortDir"
                             type="radio"/>
 
-                        <menuseparator id="openfilesPrefPopupSeparatorSortDir"/>
+                        <menuseparator id="openfiles2PrefPopupSeparatorSortDir"/>
 
                         <menuitem
-                            id="openfilesPrefPopup_ReSort"
-                            observes="cmd_openfilesReSort"
+                            id="openfiles2PrefPopup_ReSort"
+                            observes="cmd_openfiles2ReSort"
                             label="&reSort.label;"/>
 
                     </menupopup>
@@ -156,7 +156,7 @@
             </hbox>
             <richlistbox
                 flex="1"
-                id="openfilesListbox"
+                id="openfiles2Listbox"
                 class="bg_transparent" />
             
             <richlistitem
@@ -219,7 +219,7 @@
         </vbox>
     </vbox>
 
-    <script src="chrome://openfiles/content/openfiles.js"
+    <script src="chrome://openfiles2/content/openfiles2.js"
             type="application/x-javascript"/>
  
 </page>
