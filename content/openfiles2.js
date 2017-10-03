@@ -72,23 +72,23 @@ if (typeof ko.openfiles2 == 'undefined')
         init: function openfiles2_init()
         {
             self = this;
-            
-            // Create references to frequently used DOM elements 
+
+            // Create references to frequently used DOM elements
             koWindow    = require("ko/windows").getMain();
             listbox     = document.getElementById('openfiles2Listbox');
-            
+
             // Prepare item template for file items
             var tpl     = document.getElementById('fileTemplate');
             template.fileItem = tpl.cloneNode(true);
             template.fileItem.removeAttribute('collapsed');
-            template.fileItem.removeAttribute('id')
+            template.fileItem.removeAttribute('id');
             tpl.parentNode.removeChild(tpl);
-            
+
             // Prepare item template for groups/splits
             var tpl     = document.getElementById('groupTemplate');
             template.groupItem = tpl.cloneNode(true);
             template.groupItem.removeAttribute('collapsed');
-            template.groupItem.removeAttribute('id')
+            template.groupItem.removeAttribute('id');
             tpl.parentNode.removeChild(tpl);
 
             // Register built in sorting options
@@ -452,7 +452,7 @@ if (typeof ko.openfiles2 == 'undefined')
                 if (e.target == listbox && e.target.selectedItem)
                 {
                     this.selectItem(e.target.selectedItem, true /*sendEditorTabClick*/ );
-                    ko.commands.doCommandAsync('cmd_focusEditor')
+                    ko.commands.doCommandAsync('cmd_focusEditor');
                 }
             }.bind(this), true);
             
@@ -466,14 +466,84 @@ if (typeof ko.openfiles2 == 'undefined')
                 {
                     return undefined;
                 }
-                
+
                 return selectItem.call(this, item);
-            }
+            };
 
             // Register controller
             koWindow.controllers.insertControllerAt(0, this.controller);
+
+            this.addTabNumberHandler();
         },
-        
+
+        /**
+        * Add handler patch to display numbers in tabs
+        *
+        */
+        addTabNumberHandler: function openfiles2_addTabNumberHandler()
+        {
+            var vm = ko.views.manager.topView;
+            var box = document.getAnonymousNodes(vm)[0];
+
+            // get the views-tabbed elements
+            var tabset1 = box.firstChild;
+            var tabset2 = box.lastChild;
+
+            // replace the updateLeafName implementation to use something different
+            // for the tab label
+            tabset1._openfiles_updateLeafName = tabset1.updateLeafName;
+            tabset2._openfiles_updateLeafName = tabset2.updateLeafName;
+
+            tabset1.updateLeafName =
+            tabset2.updateLeafName = function(view) {
+                this._openfiles_updateLeafName(view);
+                  var editorViews = ko.views.manager.getAllViews();
+                  index = editorViews.indexOf(view) + 1;
+                  var txt = self.indexToText(index);
+                  view.parentNode._tab.label = txt+":"+view.parentNode._tab.label;
+            };
+
+            // make sure tab headers are updated
+            var views = ko.views.manager.topView.getViews(true);
+            for (var i=0; i < views.length; i++) {
+                if (views[i].document) {
+                    views[i].updateLeafName(views[i]);
+                }
+            }
+        },
+
+        /**
+        * Add handler patch to display numbers in tabs
+        *
+        */
+        indexToText: function openfiles2_indexToText(idx)
+        {
+          if ((0 < idx) && (idx < 10)) {
+            return String.fromCharCode(48 + idx);
+          } else {
+            return String.fromCharCode(97 + idx - 10);
+          }
+        },
+
+        /**
+         * Remove handler patch to display numbers in tabs
+         *
+         */
+
+        removeTabNumberHandler: function openfiles2_removeTabNumberHandler(e)
+        {
+            var vm = ko.views.manager.topView;
+            var box = document.getAnonymousNodes(vm)[0];
+
+            // get the views-tabbed elements
+            var tabset1 = box.firstChild;
+            var tabset2 = box.lastChild;
+
+            // replace back the updateLeafName implementation
+            tabset1.updateLeafName = tabset1._openfiles_updateLeafName;
+            tabset2.updateLeafName = tabset2._openfiles_updateLeafName;
+        },
+
         /**
          * Event triggered when a context menu has been triggered on an item
          * 
@@ -596,13 +666,25 @@ if (typeof ko.openfiles2 == 'undefined')
                 dirtyIndicator.setAttribute('collapsed', 'true');
             }
         },
-        
+
         /*
-         * Reloads (or initializes) the open files list. This retreives the list 
+         * Refresh tab numbering
+         */
+        refreshTabLabels: function openfiles2_refreshTabLabels()
+        {
+            var editorViews = ko.views.manager.getAllViews();
+            for (let editorView of editorViews)
+            {
+                editorView.updateLeafName(editorView);
+            }
+        },
+
+        /*
+         * Reloads (or initializes) the open files list. This retreives the list
          * of editor views and calls addItem() for each.
          *
          * This clears out the list of open files and reinitializes it entirely.
-         * 
+         *
          * @param {Boolean} noDelay     Execute reload immediately
          *
          * @returns {Void}
@@ -617,21 +699,21 @@ if (typeof ko.openfiles2 == 'undefined')
                     this.reload(true);
                 }.bind(this),10);
             }
-            
+
             // Remove existing items
             var items = listbox.querySelectorAll('richlistitem') || [];
             for (let item of items)
             {
                 item.parentNode.removeChild(item);
             }
-            
+
             // Reset internal pointers/handlers
             openViews = {};
             for (let timer in timers)
             {
                 clearTimeout(timer);
             }
-            
+
             // Retrieve list of open views and load them into the richlistbox
             var editorViews = ko.views.manager.getAllViews();
             for (let editorView of editorViews)
@@ -1005,6 +1087,7 @@ if (typeof ko.openfiles2 == 'undefined')
          */
         addItem: function openfiles2_addItem(editorView)
         {
+            this.refreshTabLabels();
             openViews[editorView.uid.number] = editorView;
             this.drawList();
         },
@@ -1054,6 +1137,7 @@ if (typeof ko.openfiles2 == 'undefined')
             // Remove empty groups caused by removing this item
             this.removeEmptyGroups();
             this.updateLabelCounter();
+            this.refreshTabLabels();
 
             return true;
         },
