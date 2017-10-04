@@ -158,6 +158,7 @@ if (typeof ko.openfiles2 == 'undefined')
             window.frameElement.hookupObservers("panel-proxy-commandset");
             
             this.bindListeners();
+            this.registerHotkeyCommands();
             this.reload();
         },
 
@@ -169,7 +170,7 @@ if (typeof ko.openfiles2 == 'undefined')
                 self.toggleGrouping();
                 this._updateCommands();
             },
-            
+
             // Tab sorting toggle
             do_cmd_openfiles2TabSorting: function()
             {
@@ -334,6 +335,50 @@ if (typeof ko.openfiles2 == 'undefined')
         },
 
         /**
+         * Register broadcasters in code instead of XUL
+         *
+         * @param {Boolean} index
+         *
+         * @returns {Void}
+         */
+        registerHotkeyCommands: function openfiles2_registerHotkeyCommands()
+        {
+            var commands = require("ko/commands");
+            for (var idx = 1; idx < 35; idx++) {
+              var pre = this.indexToText(idx);
+              var name = 'cmd_openfiles2_tab_item' + pre;
+              commands.register(name, this.onHotkeySwitchTab.bind(this, pre), {
+                  label: "openfiles2: switch to tab " + pre
+              });
+            }
+        },
+
+        /**
+         * Switch to given view, triggered by a hotkey
+         *
+         * @param {Boolean} index
+         *
+         * @returns {Void}
+         */
+        onHotkeySwitchTab: function openfiles2_onHotkeySwitchTab(index)
+        {
+            //alert(index);
+
+            for (let uid of Object.keys(openViews))
+            {
+              var view  = openViews[uid];
+              var label = this.getViewLabel(view);
+              if (label.slice(0,1) == index) {
+                var lstItem = listbox.querySelector(
+                    'richlistitem[id="'+view.uid.number+'"]'
+                );
+                self.selectItem(lstItem, true /*sendEditorTabClick*/ );
+                return;
+              }
+            }
+        },
+
+        /**
          * Toggle Open Files pane visibility
          *
          * @param {Boolean} collapseIfFocused   If true this will only focus the tab
@@ -474,6 +519,20 @@ if (typeof ko.openfiles2 == 'undefined')
             koWindow.controllers.insertControllerAt(0, this.controller);
         },
 
+
+        /**
+        * Translate tab index to tab "number", from 10->a
+        *
+        */
+        indexToText: function openfiles2_indexToText(idx)
+        {
+          if ((0 < idx) && (idx < 10)) {
+            return String.fromCharCode(48 + idx);
+          } else {
+            return String.fromCharCode(97 + idx - 10);
+          }
+        },
+
         /**
         * Return tab label
         *
@@ -482,14 +541,7 @@ if (typeof ko.openfiles2 == 'undefined')
         {
           var editorViews = ko.views.manager.getAllViews();
           var idx = editorViews.indexOf(view) + 1;
-
-          var pres;
-          if ((0 < idx) && (idx < 10)) {
-            pre = String.fromCharCode(48 + idx);
-          } else {
-            pre = String.fromCharCode(97 + idx - 10);
-          }
-          return pre + ":" + view.title;
+          return this.indexToText(idx) + ":" + view.title;
         },
 
         /**
