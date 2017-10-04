@@ -472,76 +472,24 @@ if (typeof ko.openfiles2 == 'undefined')
 
             // Register controller
             koWindow.controllers.insertControllerAt(0, this.controller);
-
-            this.addTabNumberHandler();
         },
 
         /**
-        * Add handler patch to display numbers in tabs
+        * Return tab label
         *
         */
-        addTabNumberHandler: function openfiles2_addTabNumberHandler()
+        getViewLabel: function openfiles2_getViewLabel(view)
         {
-            var vm = ko.views.manager.topView;
-            var box = document.getAnonymousNodes(vm)[0];
+          var editorViews = ko.views.manager.getAllViews();
+          var idx = editorViews.indexOf(view) + 1;
 
-            // get the views-tabbed elements
-            var tabset1 = box.firstChild;
-            var tabset2 = box.lastChild;
-
-            // replace the updateLeafName implementation to use something different
-            // for the tab label
-            tabset1._openfiles_updateLeafName = tabset1.updateLeafName;
-            tabset2._openfiles_updateLeafName = tabset2.updateLeafName;
-
-            tabset1.updateLeafName =
-            tabset2.updateLeafName = function(view) {
-                this._openfiles_updateLeafName(view);
-                  var editorViews = ko.views.manager.getAllViews();
-                  index = editorViews.indexOf(view) + 1;
-                  var txt = self.indexToText(index);
-                  view.parentNode._tab.label = txt+":"+view.parentNode._tab.label;
-            };
-
-            // make sure tab headers are updated
-            var views = ko.views.manager.topView.getViews(true);
-            for (var i=0; i < views.length; i++) {
-                if (views[i].document) {
-                    views[i].updateLeafName(views[i]);
-                }
-            }
-        },
-
-        /**
-        * Add handler patch to display numbers in tabs
-        *
-        */
-        indexToText: function openfiles2_indexToText(idx)
-        {
+          var pres;
           if ((0 < idx) && (idx < 10)) {
-            return String.fromCharCode(48 + idx);
+            pre = String.fromCharCode(48 + idx);
           } else {
-            return String.fromCharCode(97 + idx - 10);
+            pre = String.fromCharCode(97 + idx - 10);
           }
-        },
-
-        /**
-         * Remove handler patch to display numbers in tabs
-         *
-         */
-
-        removeTabNumberHandler: function openfiles2_removeTabNumberHandler(e)
-        {
-            var vm = ko.views.manager.topView;
-            var box = document.getAnonymousNodes(vm)[0];
-
-            // get the views-tabbed elements
-            var tabset1 = box.firstChild;
-            var tabset2 = box.lastChild;
-
-            // replace back the updateLeafName implementation
-            tabset1.updateLeafName = tabset1._openfiles_updateLeafName;
-            tabset2.updateLeafName = tabset2._openfiles_updateLeafName;
+          return pre + ":" + view.title;
         },
 
         /**
@@ -668,18 +616,6 @@ if (typeof ko.openfiles2 == 'undefined')
         },
 
         /*
-         * Refresh tab numbering
-         */
-        refreshTabLabels: function openfiles2_refreshTabLabels()
-        {
-            var editorViews = ko.views.manager.getAllViews();
-            for (let editorView of editorViews)
-            {
-                editorView.updateLeafName(editorView);
-            }
-        },
-
-        /*
          * Reloads (or initializes) the open files list. This retreives the list
          * of editor views and calls addItem() for each.
          *
@@ -777,8 +713,9 @@ if (typeof ko.openfiles2 == 'undefined')
             // Render the groups and splits
             this.drawGroups();
             this.updateLabelCounter();
+            this.updateFileTitles();
         },
-        
+
         /**
          * Render the item groups and splits
          *
@@ -792,7 +729,7 @@ if (typeof ko.openfiles2 == 'undefined')
             // Get the preferred grouping type (eg. by language)
             var groupOption = ko.prefs.getString(PREF_GROUPING_TYPE, 'byLanguage');
             groupOption     = groupOptions[groupOption];
-            
+
             // Remove splits, not worth preserving - they will be re-rendered
             var splits = listbox.querySelectorAll(
                 'richlistitem.split-item'
@@ -914,7 +851,7 @@ if (typeof ko.openfiles2 == 'undefined')
             listItem.setAttribute('tooltiptext', tooltip);
             listItem.setAttribute('view-type', editorView.getAttribute("type"));
             listItem.querySelector('.file-title')
-                        .setAttribute('value', editorView.title);
+                        .setAttribute('value', this.getViewLabel(editorView));
             listItem.querySelector('.file-path')
                         .setAttribute('value', dirName);
             
@@ -1087,7 +1024,6 @@ if (typeof ko.openfiles2 == 'undefined')
          */
         addItem: function openfiles2_addItem(editorView)
         {
-            this.refreshTabLabels();
             openViews[editorView.uid.number] = editorView;
             this.drawList();
         },
@@ -1137,11 +1073,33 @@ if (typeof ko.openfiles2 == 'undefined')
             // Remove empty groups caused by removing this item
             this.removeEmptyGroups();
             this.updateLabelCounter();
-            this.refreshTabLabels();
+            this.updateFileTitles();
 
             return true;
         },
 
+        /**
+         * Update the file titles
+         *
+         * @returns {Void}
+         */
+        updateFileTitles: function()
+        {
+            for (let uid of Object.keys(openViews))
+            {
+              var view  = openViews[uid];
+              var lstItem = listbox.querySelector(
+                  'richlistitem[id="'+view.uid.number+'"]'
+              );
+              var label = this.getViewLabel(view);
+              lstItem.querySelector('.file-title')
+                        .setAttribute('value', label);
+
+              // set tab label to show the prefix
+              view.parentNode._tab.label = label;
+            }
+        },
+    
         /**
          * Update the panel label counter
          *
